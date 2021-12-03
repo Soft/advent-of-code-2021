@@ -5,7 +5,8 @@
 
 (def answers
   {1 [1709 1761]
-   2 [2019945 1599311480]})
+   2 [2019945 1599311480]
+   3 [4191876 3414905]})
 
 (defmacro make-test [name fun answer input-path]
   `(deftest ~(symbol name)
