@@ -59,14 +59,14 @@
   (when-let [[x y] (get positions number)]
     (assoc-in board [y x] true)))
 
-(defn play-number [number boards]
+(defn play-number [number boards] ;; Returns ([[positions board] won]...)
   (map (fn [[positions board]]
          (if-let [new-board (record-number positions board number)]
            [[positions new-board] (bingo? new-board)]
            [[positions board] false]))
        boards))
 
-(defn play [numbers boards] ;; returns winning [[positions board] number]
+(defn play-1 [numbers boards] ;; Returns winning [[positions board] number]
   (loop [numbers numbers
          boards boards]
     (when-let [number (first numbers)]
@@ -86,8 +86,27 @@
        (filter (complement second))
        (map first)))
 
-(defn part-1 [input]
+(defn solve [play-fn input]
   (let [[numbers boards] (parse-input input)
-        [[winning-positions winning-board] final-number] (play numbers boards)
-        unmarked-numbers (unmarked-numbers winning-positions winning-board)]
+        [[positions board] final-number] (play-fn numbers boards)
+        unmarked-numbers (unmarked-numbers positions
+                                           board)]
     (* (apply + unmarked-numbers) final-number)))
+
+(defn part-1 [input]
+  (solve play-1 input))
+
+(defn play-2 [numbers boards]
+  (loop [numbers numbers
+         boards boards]
+    (when-let [number (first numbers)]
+      (let [new-state (play-number number boards)]
+        (if (and (not (second new-state)) ;; This was the final board
+                 (second (first new-state))) ;; ...and now it won
+          (let [[[positions board] _] (first new-state)]
+            [[positions board] number])
+          (recur (rest numbers)
+                 (map first (filter (complement second) new-state))))))))
+
+(defn part-2 [input]
+  (solve play-2 input))
