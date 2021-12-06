@@ -3,7 +3,7 @@
 
 (defn parse-input [input]
   (map (fn [line]
-         (let [[l x1 y1 x2 y2]
+         (let [[_ x1 y1 x2 y2]
                (re-matches #"(\d+),(\d+) -> (\d+),(\d+)" line)]
            [[(Integer/parseInt x1)
              (Integer/parseInt y1)]
