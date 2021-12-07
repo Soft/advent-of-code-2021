@@ -14,7 +14,7 @@
 (defn step [fish]
   (let [new-fish (get fish 0)]
     (update
-     (conj (into [] (drop 1 fish)) new-fish)
+     (conj (into [] (rest fish)) new-fish)
      6
      (partial + new-fish))))
 
