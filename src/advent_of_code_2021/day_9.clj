@@ -20,10 +20,30 @@
   (for [[y row] (map-indexed vector m)
         [x cell] (map-indexed vector row)
         :when (lowest? m [y x])]
-    cell))
+    [[y x] cell]))
 
 (defn part-1 [input]
   (->> (parse-map input)
-       (lowest-points)
-       (map inc)
+       lowest-points
+       (map (comp inc second))
        (apply +)))
+
+(defn basin [m coord]
+  (let [visited (atom #{})]
+    (letfn [(fill [coord]
+              (swap! visited conj coord)
+              (let [neighbors (adjacent coord)]
+                (doseq [coord neighbors]
+                  (when-not (or (contains? @visited coord)
+                                (== (get-in m coord 9) 9))
+                    (fill coord)))))]
+      (fill coord))
+    @visited))
+
+(defn part-2 [input]
+  (let [m (parse-map input)]
+    (->> (lowest-points m)
+         (map (comp count (partial basin m) first))
+         (sort >)
+         (take 3)
+         (apply *))))
