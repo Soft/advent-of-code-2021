@@ -8,19 +8,21 @@
    [advent-of-code-2021.day-6 :as day-6]
    [advent-of-code-2021.day-7 :as day-7]
    [advent-of-code-2021.day-8 :as day-8]
-   [advent-of-code-2021.day-9 :as day-9])
+   [advent-of-code-2021.day-9 :as day-9]
+   [advent-of-code-2021.day-10 :as day-10])
   (:gen-class))
 
 (def solutions
-  {1 [day-1/part-1 day-1/part-2]
-   2 [day-2/part-1 day-2/part-2]
-   3 [day-3/part-1 day-3/part-2]
-   4 [day-4/part-1 day-4/part-2]
-   5 [day-5/part-1 day-5/part-2]
-   6 [day-6/part-1 day-6/part-2]
-   7 [day-7/part-1 day-7/part-2]
-   8 [day-8/part-1]
-   9 [day-9/part-1 day-9/part-2]})
+  {1  [day-1/part-1 day-1/part-2]
+   2  [day-2/part-1 day-2/part-2]
+   3  [day-3/part-1 day-3/part-2]
+   4  [day-4/part-1 day-4/part-2]
+   5  [day-5/part-1 day-5/part-2]
+   6  [day-6/part-1 day-6/part-2]
+   7  [day-7/part-1 day-7/part-2]
+   8  [day-8/part-1]
+   9  [day-9/part-1 day-9/part-2]
+   10 [day-10/part-1 day-10/part-2]})
 
 (defn -main [day part path]
   (let [day (Integer/parseInt day)
