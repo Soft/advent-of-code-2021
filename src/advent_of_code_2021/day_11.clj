@@ -66,3 +66,14 @@
       simulate
       (nth 100)
       second))
+
+(defn part-2 [input]
+  (->> (parse-map input)
+       simulate
+       (map-indexed vector)
+       (filter (fn [[_ [m _]]]
+                 (every? (partial = 0)
+                         (apply concat m))))
+       first
+       first))
+
