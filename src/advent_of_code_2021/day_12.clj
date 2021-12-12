@@ -32,13 +32,26 @@
                    (atom @state) visit allowed? graph node end))))
     [[current]]))
 
-(defn traverse [graph]
+(defn traverse-1 [graph]
   (traverse-helper (atom #{}) conj (comp not contains?) graph :start :end))
 
 (defn part-1 [input]
   (-> (parse-graph input)
-      traverse
+      traverse-1
       count))
+
+(defn traverse-2 [special graph]
+  (traverse-helper
+   (atom {})
+   #(update %1 %2 (fnil inc 0))
+   (fn [state node]
+     (let [visits (node state 0)]
+       (if (= node special)
+         (< visits 2)
+         (zero? visits))))
+   graph
+   :start
+   :end))
 
 (defn part-2 [input]
   (let [graph (parse-graph input)]
@@ -49,17 +62,7 @@
          (reduce
           (fn [paths special]
             (apply (partial conj paths)
-                   (traverse-helper
-                    (atom {})
-                    #(update %1 %2 (fnil inc 0))
-                    (fn [state node]
-                      (let [visits (node state 0)]
-                        (if (= node special)
-                          (< visits 2)
-                          (zero? visits))))
-                    graph
-                    :start
-                    :end)))
+                   (traverse-2 special graph)))
           #{})
          count)))
 
