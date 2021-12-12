@@ -20,18 +20,16 @@
        (= name (str/upper-case name))))))
 
 (defn traverse-helper [visited graph current end]
-  (do
-    (when-not (large-cave? current)
-      (swap! visited conj current))
-    (if-not (= current end)
-      (let [nodes (current graph)]
-        (apply concat
-               (for [node nodes
-                     :when (or (large-cave? node)
-                               (not (contains? @visited node)))
-                     :let [paths (traverse-helper (atom @visited) graph node end)]]
-                 (map #(concat [current] %) paths))))
-      [[current]])))
+  (when-not (large-cave? current)
+    (swap! visited conj current))
+  (if-not (= current end)
+    (apply concat
+           (for [node (current graph)
+                 :when (or (large-cave? node)
+                           (not (contains? @visited node)))]
+             (map (partial concat [current])
+                  (traverse-helper (atom @visited) graph node end))))
+    [[current]]))
 
 (defn traverse [graph]
   (traverse-helper (atom #{}) graph :start :end))
