@@ -66,7 +66,7 @@
         max-y (second (apply (partial max-key second) sheet))]
     (reduce
      (fn [matrix [x y]]
-       (update-in matrix [y x] (constantly true)))
+       (assoc-in matrix [y x] true))
      (->> (repeat (inc max-x) false)
           (into [])
           (repeat (inc max-y))
