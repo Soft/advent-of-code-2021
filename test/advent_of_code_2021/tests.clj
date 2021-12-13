@@ -1,7 +1,18 @@
 (ns advent-of-code-2021.tests
   (:require [clojure.test :refer [deftest is]]
+            [clojure.string :as str]
             [clojure.java.io :as io]
             [advent-of-code-2021.core :as core]))
+
+(def day-13-part-2
+  (str/triml
+   "
+████  ██  ████ █  █ █    █  █ ████ ████
+█    █  █ █    █  █ █    █  █    █ █   
+███  █    ███  ████ █    ████   █  ███ 
+█    █    █    █  █ █    █  █  █   █   
+█    █  █ █    █  █ █    █  █ █    █   
+████  ██  █    █  █ ████ █  █ ████ █   "))
 
 (def answers
   {1  [1709 1761]
@@ -16,7 +27,7 @@
    10 [462693 3094671161]
    11 [1652 220]
    12 [3298 93572]
-   13 [678]})
+   13 [678 day-13-part-2]})
 
 (defmacro make-test [name fun answer input-path]
   `(deftest ~(symbol name)

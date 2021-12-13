@@ -33,7 +33,7 @@
   (map
    (fn [[x y]]
      (if (> x x-fold)
-       [(- x-fold (- x x-fold)) y] ; a*x-fold - x
+       [(- (* 2 x-fold) x) y]
        [x y]))
    sheet))
 
@@ -41,7 +41,7 @@
   (map
    (fn [[x y]]
      (if (> y y-fold)
-       [x (- y-fold (- y y-fold))] ; a*y-fold - y
+       [x (- (* 2 y-fold) y)]
        [x y]))
    sheet))
 
@@ -60,3 +60,30 @@
          (fold-sheet sheet)
          (into #{})
          count)))
+
+(defn sheet->matrix [sheet]
+  (let [max-x (first (apply (partial max-key first) sheet))
+        max-y (second (apply (partial max-key second) sheet))]
+    (reduce
+     (fn [matrix [x y]]
+       (update-in matrix [y x] (constantly true)))
+     (->> (repeat (inc max-x) false)
+          (into [])
+          (repeat (inc max-y))
+          (into []))
+     sheet)))
+
+(defn matrix->str [matrix]
+  (str/join
+   \newline
+   (map
+    (fn [row]
+      (str/join
+       (map #(if % \u2588 \space) row)))
+    matrix)))
+
+(defn part-2 [input]
+  (let [[sheet instructions] (parse-input input)]
+    (-> (fold-sheet sheet instructions)
+        sheet->matrix
+        matrix->str)))

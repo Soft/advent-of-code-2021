@@ -28,7 +28,7 @@
    10 [day-10/part-1 day-10/part-2]
    11 [day-11/part-1 day-11/part-2]
    12 [day-12/part-1 day-12/part-2]
-   13 [day-13/part-1]})
+   13 [day-13/part-1 day-13/part-2]})
 
 (defn -main [day part path]
   (let [day (Integer/parseInt day)
