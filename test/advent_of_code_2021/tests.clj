@@ -27,7 +27,8 @@
    10 [462693 3094671161]
    11 [1652 220]
    12 [3298 93572]
-   13 [678 day-13-part-2]})
+   13 [678 day-13-part-2]
+   14 [2621]})
 
 (defmacro make-test [name fun answer input-path]
   `(deftest ~(symbol name)
