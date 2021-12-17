@@ -1,5 +1,6 @@
 (ns advent-of-code-2021.day-16
-  (:require [clojure.string :as str]))
+  (:require [clojure.string :as str]
+            [clojure.walk :as walk]))
 
 (def hex-char->bool-vec
   (memoize
@@ -112,3 +113,52 @@
    (map :version)
    (apply +)))
 
+
+(defn var-op [op node]
+  (apply op (:packets node)))
+
+(defn bin-op [op node]
+  {:pre [(= (count (:packets node)) 2)]}
+  (if (op (first (:packets node))
+          (second (:packets node)))
+    1 0))
+
+(defmulti evaluate-node :type)
+
+(defmethod evaluate-node 0 [node]
+  (var-op + node))
+
+(defmethod evaluate-node 1 [node]
+  (var-op * node))
+
+(defmethod evaluate-node 2 [node]
+  (var-op min node))
+
+(defmethod evaluate-node 3 [node]
+  (var-op max node))
+
+(defmethod evaluate-node 4 [node]
+  (:value node))
+
+(defmethod evaluate-node 5 [node]
+  (bin-op > node))
+
+(defmethod evaluate-node 6 [node]
+  (bin-op < node))
+
+(defmethod evaluate-node 7 [node]
+  (bin-op = node))
+
+(defmethod evaluate-node :default [node]
+  node)
+
+(defn evaluate [prog]
+  (walk/postwalk evaluate-node prog))
+
+(defn part-2 [input]
+  (->>
+   (str/trimr input)
+   hex->bits
+   read-packet
+   first
+   evaluate))
